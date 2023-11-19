@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialFriends = [
   {
     id: 118836,
@@ -20,12 +22,23 @@ const initialFriends = [
 ];
 
 export default function App() {
+  const [showAddFriend, setShowAddFriend] = useState(false);
+
+  function handleShowAddFriend() {
+    setShowAddFriend((show) => !show); //svejedno koje je ime mozemo i showaddfriend ili show
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
         <FriendsList />
-        <FormAddFriend />
-        <Button>Add friend</Button>
+        {showAddFriend && <FormAddFriend />}
+        {/* Ako je stateShowAddFriend true onda pokaze FormAddFriend */}
+        <Button onClick={handleShowAddFriend}>
+          {showAddFriend ? "Close" : "Addfriend"}
+          {/* Ako je state showAddFriend true onda je forma otvorena i button treba
+          da pise close */}
+        </Button>
       </div>
       <FormSplitBill />
     </div>
@@ -66,8 +79,12 @@ function Friend({ friend }) {
   );
 }
 
-function Button({ children }) {
-  return <button className="button">{children}</button>;
+function Button({ children, onClick }) {
+  return (
+    <button className="button" onClick={onClick}>
+      {children}
+    </button>
+  );
 }
 
 function FormAddFriend() {
